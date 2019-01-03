@@ -9,7 +9,7 @@ import './product_control.dart';
     build()
 */
 class ProductManager extends StatefulWidget {
-  final String startingProduct;
+  final Map<String, String> startingProduct;
   //positional constructor
   ProductManager({this.startingProduct}) {
     print('[ProductsManager Wigets] Constructor');
@@ -25,7 +25,7 @@ class ProductManager extends StatefulWidget {
 
 class _ProductManagerState extends State<ProductManager> {
   //add a proprty that can be modified by the state
-  List<String> _products = [];
+  List<Map<String, String>> _products = [];
 
 /*initState() allows you in initialize the first state,
 weiget allows you to access base class fields.
@@ -49,9 +49,9 @@ weiget allows you to access base class fields.
   }
 
   // pass this method to ProductControl
-  void _addProduct(String product) {
+  void _addProduct(Map<String, String> product) {
     setState(() {
-      _products.add('More Food');
+      _products.add(product);
       print(_products);
     });
   }
