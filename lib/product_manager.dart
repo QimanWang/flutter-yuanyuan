@@ -56,6 +56,12 @@ weiget allows you to access base class fields.
     });
   }
 
+  void _deleteProduct(int index ){
+      setState(() {
+              _products.removeAt(index);
+            });
+  }
+
   @override
   Widget build(BuildContext context) {
     print('[ProductManager State] build()');
@@ -66,7 +72,7 @@ weiget allows you to access base class fields.
           child: ProductControl(_addProduct),
         ),
         //Expanded takes the remanining space.
-        Expanded(child: Products(_products))
+        Expanded(child: Products(_products, deleteProduct : _deleteProduct))
       ],
     );
   }

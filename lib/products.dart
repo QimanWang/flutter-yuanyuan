@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import './pages/products.dart';
+import './pages/product.dart';
 
 class Products extends StatelessWidget {
   final List<Map<String, String>> products;
+  final Function deleteProduct;
 
   //constructor to get products from main,
   //syntatic sugar to take product parameter and assign to this.product
-  Products(this.products) {
+  Products(this.products, {this.deleteProduct}) {
     print('[Products Wigets] Constructor');
   }
 
@@ -22,11 +23,21 @@ class Products extends StatelessWidget {
             FlatButton(
               child: Text('Details'),
               //move to another page
-              onPressed: () => Navigator.push(
+              onPressed: () => Navigator.push<bool>(
                   context,
                   MaterialPageRoute(
-                    builder: (BuildContext context) => ProductPage(products[index]['title'],products[index]['imageUrl']),
-                  )),
+                    builder: (BuildContext context) => ProductPage(
+                        products[index]['title'], products[index]['imageUrl']),
+                  ),
+                  ).then((bool value){
+                    //the future here returns a bool value from the pop button
+                    print(value);
+                    if(value){
+                      deleteProduct(index);
+                    }
+                  }
+                  
+                  ),
             )
           ])
         ],
