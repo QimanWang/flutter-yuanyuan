@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:flutter/rendering.dart';
 
 import './pages/auth.dart';
 import './pages/products_admin.dart';
@@ -11,26 +12,22 @@ void main() {
   // debugPaintPointersEnabled = true;
   runApp(MyApp());
 }
-// void main() => runApp(MyApp());
 
-//stateful widget requires createState()
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _MyAppState();
   }
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Map<String, String>> _products;
+  List<Map<String, String>> _products = [];
 
-  // pass this method to ProductControl
   void _addProduct(Map<String, String> product) {
     setState(() {
       _products.add(product);
-      print(_products);
     });
+    print(_products);
   }
 
   void _deleteProduct(int index) {
@@ -49,26 +46,29 @@ class _MyAppState extends State<MyApp> {
       //scaffold createes the things u want to see on the page
       // home: AuthPage(), or we can use '/' as home
       routes: {
-        '/': (BuildContext context) => ProductsPage(_products,_addProduct,_deleteProduct),
+        '/': (BuildContext context) =>
+            ProductsPage(_products, _addProduct, _deleteProduct),
         '/admin': (BuildContext context) => ProductsAdminPage(),
       },
-      //
+      //handle named route that is not registred
       onGenerateRoute: (RouteSettings settings) {
         final List<String> pathElements = settings.name.split('/');
-        // '/products/1'
         if (pathElements[0] != '') {
           return null;
-        } //check if invalid
+        }
         if (pathElements[1] == 'product') {
-          //'/product/'
           final int index = int.parse(pathElements[2]);
-
-          MaterialPageRoute<bool>(
+          return MaterialPageRoute<bool>(
             builder: (BuildContext context) => ProductPage(
                 _products[index]['title'], _products[index]['imageUrl']),
           );
         }
         return null; //if nothing makes it
+      },
+      onUnknownRoute: (RouteSettings settings) {
+        return MaterialPageRoute(
+            builder: (BuildContext context) =>
+                ProductsPage(_products, _addProduct, _deleteProduct));
       },
     );
   }
